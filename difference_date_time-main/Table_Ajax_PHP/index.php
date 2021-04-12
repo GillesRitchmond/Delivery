@@ -101,82 +101,84 @@
                 fetch_data();
             }
         });
-        setInterval(function(){
-        $('#alert_message').html('');
-    }, 5000);
-  }
+            setInterval(function(){
+            $('#alert_message').html('');
+        }, 5000);
+    }
 
-  $(document).on('blur', '.update', function(){
-   var id = $(this).data("id");
-   var column_name = $(this).data("column");
-   var value = $(this).text();
-   update_data(id, column_name, value);
-  });
+    $(document).on('blur', '.update', function(){
+        var id = $(this).data("id");
+        var column_name = $(this).data("column");
+        var value = $(this).text();
+        update_data(id, column_name, value);
+    });
   
-  $('#add').click(function(){
-   var html = '<tr id="row">';
-   html += '<td contenteditable id="data1"></td>';
-   html += '<td contenteditable id="data2"></td>';
-   html += '<td contenteditable id="data3"></td>';
-   html += '<td contenteditable id="data4"></td>';
-   html += '<td contenteditable id="data5"></td>';
-   html += '<td contenteditable id="data6"></td>';
-   html += '<td><button type="button" name="insert" id="insert" class="btn btn-success btn-xs">Insert</button></td>';
-   html += '</tr>';
-   $('#user_data tbody').prepend(html);
-  });
+    $('#add').click(function(){
+        var html = '<tr id="row">';
+        html += '<td contenteditable id="data1"></td>';
+        html += '<td contenteditable id="data2"></td>';
+        html += '<td contenteditable id="data3"></td>';
+        html += '<td contenteditable id="data4"></td>';
+        html += '<td contenteditable id="data5"></td>';
+        html += '<td contenteditable id="data6"></td>';
+        html += '<td><button type="button" name="insert" id="insert" class="btn btn-success btn-xs">Insert</button></td>';
+        html += '</tr>';
+        $('#user_data tbody').prepend(html);
+    });
   
-  $(document).on('click', '#insert', function(){
-   var numero_fiche = $('#data1').text();
-   var envoyeur = $('#data2').text();
-   var receveur = $('#data3').text();
-   var heure_envoie = $('#data4').text();
-   var heure_reception = $('#data5').text();
-   var temps_attente = $('#data6').text();
+    $(document).on('click', '#insert', function(){
+        var numero_fiche = $('#data1').text();
+        var envoyeur = $('#data2').text();
+        var heure_envoie = $('#data3').text();
+        var receveur = $('#data4').text();
+        var heure_reception = $('#data5').text();
+        var temps_attente = $('#data6').text();
    
-   if(numero_fiche != '' && envoyeur != '' && receveur != '' && heure_envoie != '' && heure_reception != '' && temps_attente != '')
-   {
-    $.ajax({
-     url:"insert.php",
-     method:"POST",
-     data:{numero_fiche:numero_fiche, envoyeur:envoyeur, receveur:receveur, heure_envoie:heure_envoie, heure_reception:heure_reception, temps_attente:temps_attente},
-     success:function(data)
-     {
-      $('#alert_message').html('<div class="alert alert-success">'+data+'</div>');
-      $('#row').css('background-color','#fd7e14')
-      $('#user_data').DataTable().destroy();
-      fetch_data();
-     }
+        if(numero_fiche != '' && envoyeur != '' && heure_envoie != '' && receveur != '' && heure_reception != '' && temps_attente != '')
+        {
+            $.ajax({
+                url:"insert.php",
+                method:"POST",
+                data:{numero_fiche:numero_fiche, envoyeur:envoyeur, heure_envoie:heure_envoie, receveur:receveur, heure_reception:heure_reception, temps_attente:temps_attente},
+                success:function(data)
+                {
+                    $('#alert_message').html('<div class="alert alert-success">'+data+'</div>');
+                    $('#row').css('background-color','#fd7e14')
+                    $('#user_data').DataTable().destroy();
+                    fetch_data();
+                }
+            });
+
+            setInterval(function(){
+                $('#alert_message').html('');
+            }, 5000);
+        }
+        else
+        {
+            alert("Fields is required");
+        }
     });
-    setInterval(function(){
-     $('#alert_message').html('');
-    }, 5000);
-   }
-   else
-   {
-    alert("Fields is required");
-   }
-  });
   
   
-  $(document).on('click', '.delete', function(){
-   var id = $(this).attr("id");
-   if(confirm("Are you sure you want to remove this?"))
-   {
-    $.ajax({
-     url:"delete.php",
-     method:"POST",
-     data:{id:id},
-     success:function(data){
-      $('#alert_message').html('<div class="alert alert-success">'+data+'</div>');
-      $('#user_data').DataTable().destroy();
-      fetch_data();
-     }
+    $(document).on('click', '.delete', function(){
+        var id = $(this).attr("id");
+        if(confirm("Are you sure you want to remove this?"))
+        {
+            $.ajax({
+                url:"delete.php",
+                method:"POST",
+                data:{id:id},
+                success:function(data){
+                    $('#alert_message').html('<div class="alert alert-success">'+data+'</div>');
+                    $('#user_data').DataTable().destroy();
+                    fetch_data();
+                }
+            });
+            
+            setInterval(function(){
+                $('#alert_message').html('');
+            }, 5000);
+        }
     });
-    setInterval(function(){
-     $('#alert_message').html('');
-    }, 5000);
-   }
-  });
- });
+});
 </script>
