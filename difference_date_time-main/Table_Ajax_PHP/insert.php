@@ -1,6 +1,6 @@
 <?php
 $connect = mysqli_connect("localhost", "root", "", "testing");
-if(isset($_POST["numero_fiche"]) AND ($_POST["envoyeur"]) AND ($_POST["heure_envoie"]) AND ($_POST["receveur"]) AND ($_POST["heure_reception"]) AND ($_POST["temps_attente"]))
+if(isset($_POST["numero_fiche"]) AND ($_POST["envoyeur"]) AND ($_POST["heure_envoie"]) AND ($_POST["receveur"]) )
 {
     // $numero_fiche = mysqli_real_escape_string($connect, $_POST["numero_fiche"]);
     // $envoyeur = mysqli_real_escape_string($connect, $_POST["envoyeur"]);
@@ -18,9 +18,9 @@ if(isset($_POST["numero_fiche"]) AND ($_POST["envoyeur"]) AND ($_POST["heure_env
 
     try {
 
-        $stmt = $connect->prepare(" INSERT INTO tbl_user(numero_fiche, envoyeur, heure_envoie, receveur, heure_reception, temps_attente)
-                            VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param('ssssss', $numero_fiche, $envoyeur, $heure_envoie, $receveur, $heure_reception, $temps_attente);
+        $stmt = $connect->prepare(" INSERT INTO tbl_user(numero_fiche, envoyeur, heure_envoie, receveur)
+                            VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $numero_fiche, $envoyeur, $heure_envoie, $receveur);
         
         $input = filter_input_array(INPUT_POST);
 
@@ -28,11 +28,13 @@ if(isset($_POST["numero_fiche"]) AND ($_POST["envoyeur"]) AND ($_POST["heure_env
         $envoyeur = mysqli_real_escape_string($connect, $input["envoyeur"]);
         $receveur = mysqli_real_escape_string($connect, $input["receveur"]);
         $heure_envoie = mysqli_real_escape_string($connect, $input["heure_envoie"]);
-        $heure_reception = mysqli_real_escape_string($connect, $input["heure_reception"]);
-        $temps_attente = mysqli_real_escape_string($connect, $input["temps_attente"]);
+        // $heure_reception = mysqli_real_escape_string($connect, $input["heure_reception"]);
+        // $temps_attente = mysqli_real_escape_string($connect, $input["temps_attente"]);
 
         if($stmt->execute()){
             echo 'Enregistrement réussi';
+        } else {
+            echo 'Enregistrement echoue';
         }
         
         // $mysqli->close();
@@ -43,7 +45,7 @@ if(isset($_POST["numero_fiche"]) AND ($_POST["envoyeur"]) AND ($_POST["heure_env
         // ;
     } catch(PDOException $e) {
         
-        echo'<div class="alert alert-danger" role="alert">
+        echo '<div class="alert alert-danger" role="alert">
             L\' enregistrement n\'a pas été faite  !
             </div>'
         ;

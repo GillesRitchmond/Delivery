@@ -1,17 +1,32 @@
 <html>
  <head>
   <title>Delivery Management System</title>
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>  
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>  
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>  
+  
+    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">  
+  
+
+
+  <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /> -->
   <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script> -->
 
+  <!-- <script src = "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>  
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>  
+  <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">   -->
   <!-- <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
     <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script> -->
 
-  <style>
+
+    <style>
   body
   {
    margin:0;
@@ -117,24 +132,40 @@
         var html = '<tr id="row">';
         html += '<td contenteditable id="data1"></td>';
         html += '<td contenteditable id="data2"></td>';
-        html += '<td contenteditable id="data3"></td>';
+        html += '<td contenteditable id="data3">' +
+            '<div class = "input-group date" id="datetimepicker3">' +  
+                '<input type = "text" class="form-control" id="datetime3"/>' + 
+                '<span class = "input-group-addon">' + 
+                '<span class = "glyphicon glyphicon-time"></span>' + 
+                '</span>' + 
+             '</div>'
+        +'</td>';
         html += '<td contenteditable id="data4"></td>';
         html += '<td contenteditable id="data5"></td>';
         html += '<td contenteditable id="data6"></td>';
         html += '<td><button type="button" name="insert" id="insert" class="btn btn-success btn-xs">Insert</button></td>';
         html += '</tr>';
         $('#user_data tbody').prepend(html);
+        $(function () {  
+            $('#datetimepicker3').datetimepicker({  
+                format: "YYYY-MM-DD H:m:s"
+            });  
+        }); 
+        
     });
+
+       
   
     $(document).on('click', '#insert', function(){
         var numero_fiche = $('#data1').text();
         var envoyeur = $('#data2').text();
-        var heure_envoie = $('#data3').text();
+        var heure_envoie = $('#datetime3').val();
         var receveur = $('#data4').text();
         var heure_reception = $('#data5').text();
         var temps_attente = $('#data6').text();
+        console.log($("#datetime3").val());
    
-        if(numero_fiche != '' && envoyeur != '' && heure_envoie != '' && receveur != '' && heure_reception != '' && temps_attente != '')
+        if(numero_fiche != '' && envoyeur != '' && heure_envoie != '' && receveur != '')
         {
             $.ajax({
                 url:"insert.php",
